@@ -1,7 +1,5 @@
 <?php
 
-require_once('DigitalSandwich/Silverware/Thread.php');
-
 class DigitalSandwich_Silverware_ThreadPool
 {
 	protected $threadArray = array();
@@ -31,8 +29,8 @@ class DigitalSandwich_Silverware_ThreadPool
 		$thread = new DigitalSandwich_Silverware_Thread($worker);
 		$this->threadArray[$thread->getPid()] = $thread;
 		$this->socketArray[] = $thread->getSocket();
-		$this->socketThreadMap[$thread->getSocket()] = $thread;
-		return TRUE;
+		$this->socketThreadMap[(int)$thread->getSocket()] = $thread;
+		return $thread;
 	}
 
 	public function checkThreads()
@@ -89,10 +87,10 @@ class DigitalSandwich_Silverware_ThreadPool
 		foreach ($sockets as $socket)
 		{
 			$socketClosed = FALSE;
-			$messages = array_merge($messages, $this->socketThreadMap[$socket]->getMessages($socketClosed));
+			$messages = array_merge($messages, $this->socketThreadMap[(int)$socket]->getMessages($socketClosed));
 			if ($socketClosed)
 			{
-				$this->socketThreadMap[$socket]->closeSocket();
+				$this->socketThreadMap[(int)$socket]->closeSocket();
 				$this->removeSocket($socket);
 				unset($this->socketArray[array_search($socket, $this->socketArray)]);
 			}
@@ -106,7 +104,7 @@ class DigitalSandwich_Silverware_ThreadPool
 	protected function removeSocket($socket)
 	{
 		unset($this->socketArray[array_search($socket, $this->socketArray)]);
-		unset($this->socketThreadMap[$socket]);
+		unset($this->socketThreadMap[(int)$socket]);
 	}
 }
 
