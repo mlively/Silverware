@@ -1,0 +1,19 @@
+{
+    "name": "mlively/silverware",
+    "description": "Pcntl Library",
+    "license": "BSD-3-Clause",
+    "authors": [
+        { "name": "Mike Lively", "email": "m@digitalsandwich.com" }
+    ],
+    "require": {
+        "php": ">5.2"
+    },
+    "autoload": {
+        "psr-0": { "DigitalSandwich_": "" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
